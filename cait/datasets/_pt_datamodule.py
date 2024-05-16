@@ -38,7 +38,7 @@ class CryoDataModule(LightningDataModule):
     :type double: bool
     """
 
-    def __init__(self, hdf5_path, type, keys, channel_indices, feature_indices=None,
+    def __init__(self, hdf5_path, type, keys, channel_indices, val_size, test_size, batch_size, nmbr_workers, feature_indices=None,
                  transform=None, nmbr_events=None, double=False):
         
         # CHECK IF TORCH IS INSTALLED
@@ -55,8 +55,13 @@ class CryoDataModule(LightningDataModule):
         self.transform = transform
         self.nmbr_events = nmbr_events
         self.double = double
+        self.test_size = test_size
+        self.val_size = val_size
+        self.batch_size = batch_size
+        self.dataset_size = dataset_size
+        self.nmbr_workers = nmbr_workers
 
-    def prepare_data(self, val_size, test_size, batch_size, nmbr_workers, load_to_memory=False,
+    def prepare_data(self, load_to_memory=False,
                      dataset_size=None, only_idx=None,
                      shuffle_dataset=True, random_seed=None,
                      feature_keys=[], label_keys=[], keys_one_hot=[],
@@ -91,11 +96,6 @@ class CryoDataModule(LightningDataModule):
         :type keys_one_hot: list of strings
         """
         # called only on 1 worker
-        self.test_size = test_size
-        self.val_size = val_size
-        self.batch_size = batch_size
-        self.dataset_size = dataset_size
-        self.nmbr_workers = nmbr_workers
         self.only_idx = only_idx
         self.shuffle_dataset = shuffle_dataset
         self.random_seed = random_seed
