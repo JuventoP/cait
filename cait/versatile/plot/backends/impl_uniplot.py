@@ -40,6 +40,11 @@ class BaseClassUniplot(BackendBaseClass):
                         "label": "ylabel",
                         "scale": "log",
                         "range": (0, 10)
+                        },
+                    "caxis": {
+                        "label": "clabel",
+                        "scale": "linear",
+                        "range": (0, 10)
                         }
                     }
                 }
@@ -142,6 +147,9 @@ class BaseClassUniplot(BackendBaseClass):
         
         if name is None: name = f"histogram {len(self.histograms)+1}"
         self.histograms[name] = [x, y]
+
+    def _add_heatmap(self, x: list, y: list, bins: Union[int, tuple], name: str = None):
+        raise NotImplementedError("Heatmaps are not implemented for backend 'uniplot'")
         
     def _add_vmarker(self, marker_pos, y_int, name=None):
         raise NotImplementedError("vmarker not implemented for backend 'uniplot'")
@@ -160,6 +168,9 @@ class BaseClassUniplot(BackendBaseClass):
 
     def _update_histogram(self, name: str, bins: Union[int, tuple], data: List[float]):
         ...
+
+    def _update_heatmap(self, name: str, x: list, y: list, bins: Union[int, tuple]):
+        raise NotImplementedError("Heatmaps are not implemented for backend 'uniplot'")
 
     def _update_vmarker(self, name, marker_pos, y_int):
         raise NotImplementedError("vmarker not implemented for backend 'uniplot'")
@@ -323,3 +334,7 @@ class BaseClassUniplot(BackendBaseClass):
     @property
     def histogram_names(self):
         return list(self.histograms.keys())
+    
+    @property
+    def heatmap_names(self):
+        raise NotImplementedError("Heatmaps are not implemented for backend 'uniplot'")
